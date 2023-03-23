@@ -1,1 +1,12 @@
-server-files
+server-files/*
+!server-files/banned-ips.json
+!server-files/banned-players.json
+!server-files/bukkit.yml
+!server-files/commands.yml
+!server-files/eula.txt
+!server-files/help.yml
+!server-files/ops.json
+!server-files/permissions.yml
+!server-files/server.properties
+!server-files/spigot.yml
+!server-files/whitelist.json
