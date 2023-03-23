@@ -4,11 +4,10 @@ ARG PAPER_VERSION
 ARG PAPER_BUILD_NUMBER
 
 RUN useradd \
-  --base-dir /opt/minecraft \
+  --base-dir /opt \
   --create-home \
   --shell /bin/bash \
   minecraft
-RUN chown minecraft:minecraft /opt/minecraft
 USER minecraft:minecraft
 
 WORKDIR /opt/minecraft
