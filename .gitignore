@@ -1,1 +1,3 @@
-server-files
+backups/*
+!backups/readme.md
+view_backup

@@ -6,7 +6,7 @@ CUSTOM_VERSION=1
 
 VERSION=${PAPER_VERSION}-${PAPER_BUILD_NUMBER}-${CUSTOM_VERSION}
 
-RAM=3G
+VIEW_BACKUP_FOLDER=view_backup
 
 .PHONEY: build-image
 build-image:
@@ -17,10 +17,43 @@ build-image:
 		--build-arg PAPER_BUILD_NUMBER=${PAPER_BUILD_NUMBER} \
 		.
 
-.PHONEY: create-container
-create-container:
-	docker container create \
-		--volume `pwd`/server-files:/opt/minecraft/server-files \
-		--publish 25565:25565 \
-		--env RAM=${RAM} \
-		${DOCKER_IMAGE_NAME}:latest
+.PHONEY: inspect-files
+inspect-files:
+	docker run \
+		--rm \
+		--volume minecraft-server_persistent-files:/server-files \
+		--entrypoint /bin/sh \
+		--tty \
+		--interactive \
+		alpine
+
+.PHONEY: backup
+backup:
+	docker run \
+		--rm \
+		--volume minecraft-server_persistent-files:/server-files \
+		--volume `pwd`/backups:/backups \
+		--volume `pwd`/scripts:/scripts \
+		ubuntu bash /scripts/backup.sh `id -u` `id -g`
+
+.PHONEY: restore
+restore:
+	docker run \
+		--rm \
+		--volume minecraft-server_persistent-files:/server-files \
+		--volume `pwd`/backups:/backups \
+		--volume `pwd`/scripts:/scripts \
+		ubuntu bash /scripts/restore.sh
+
+.PHONEY: view-backup
+view-backup:
+	rm -rf ${VIEW_BACKUP_FOLDER}
+	mkdir ${VIEW_BACKUP_FOLDER}
+	tar \
+		-xzvf \
+		backups/`ls backups -t --width=1 | head -n 1` \
+		-C ${VIEW_BACKUP_FOLDER}
+
+.PHONEY: stop
+stop:
+	docker container exec -it minecraft-server_server kill 7

@@ -1,0 +1,18 @@
+services:
+  minecraft-server:
+    image: thewrongjames/minecraft-server:latest
+    container_name: minecraft-server_server
+    volumes:
+      - type: volume
+        source: persistent-files
+        target: /opt/minecraft/server-files
+    environment:
+      RAM: 3G
+    ports:
+      - 25565:25565
+    stdin_open: true
+    tty: true
+
+volumes:
+  persistent-files:
+    name: minecraft-server_persistent-files
