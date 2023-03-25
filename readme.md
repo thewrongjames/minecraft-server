@@ -63,3 +63,8 @@ make view-backup
 ```
 
 .
+
+## TODO
+
+- Make a systemctl timer backup thingo.
+- Make `docker container stop` stop the server gracefully.
