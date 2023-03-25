@@ -53,7 +53,3 @@ view-backup:
 		-xzvf \
 		backups/`ls backups -t --width=1 | head -n 1` \
 		-C ${VIEW_BACKUP_FOLDER}
-
-.PHONEY: stop
-stop:
-	docker container exec -it minecraft-server_server kill 7

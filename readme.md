@@ -34,7 +34,8 @@ again.
 Stopping the container through docker doesn't gracefully stop the server for some reason, so always stop the server with
 
 ```
-make stop
+docker container attach minecraft-server_server
+stop
 ```
 
 .
