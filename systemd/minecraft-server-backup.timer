@@ -2,7 +2,7 @@
 Description=Run the minecraft server backup on Sundays and Thursdays at 17:00 in UTC+0 (which is Mondays and Fridays at 03:00 in UTC+10).
 
 [Timer]
-OnCalendar=Sun,Thur 17:00:00
+OnCalendar=Sun,Thu 17:00:00
 Persistent=true
 
 [Install]
