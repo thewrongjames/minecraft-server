@@ -65,7 +65,16 @@ make view-backup
 
 .
 
+## Systemd service and timer
+
+The systemd service and timer files located in `systemd` are very coupled to an assumption of a particular setup of the host machine. That isn't great, but I don't really have any ideas to generalise them, so I just set them to align to my setup.
+
+They assume that there is a user called `minecraft` which is in a group of a corresponding name. They assume that this user controls a clone of this repo at `/opt/minecraft/minecraft-server` (in my setup `/opt/minecraft` is the home directory of the `minecraft` user).
+
+To use them, you will need to manually copy them into `/etc/systemd/system`, as root. You can do this with `sudo cp systemd/* /etc/systemd/system`. You will then need to `systemctl enable` them both and `systemctl start` the timer.
+
+If the service already existed when you copy it in, you will need to run `systemctl daemon-reload` to refresh `systemd`'s knowledge of the source files.
+
 ## TODO
 
-- Make a systemctl timer backup thingo.
 - Make a systemctl timer to thin out old backups

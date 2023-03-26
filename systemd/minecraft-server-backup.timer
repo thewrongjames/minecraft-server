@@ -1,0 +1,9 @@
+[Unit]
+Description=Run the minecraft server backup on Mondays and Fridays at 17:00 in UTC+0 (which is 03:00 in UTC+10).
+
+[Timer]
+OnCalendar=Mon,Fri 17:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

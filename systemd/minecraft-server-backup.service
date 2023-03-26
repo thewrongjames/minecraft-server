@@ -1,0 +1,12 @@
+[Unit]
+Description=Make a backup of the current state of the minecraft server.
+
+[Service]
+Type=oneshot
+User=minecraft
+Group=minecraft
+WorkingDirectory=/opt/minecraft/minecraft-server
+ExecStart=make backup
+
+[Install]
+WantedBy=default.target
