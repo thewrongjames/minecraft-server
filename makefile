@@ -52,6 +52,7 @@ backup:
 
 .PHONEY: restore
 restore:
+	docker container stop ${CONTAINER_NAME}
 	# Restore the most recent backup.
 	docker run \
 		--rm \
@@ -59,6 +60,7 @@ restore:
 		--volume `pwd`/backups:/backups \
 		--volume `pwd`/scripts:/scripts \
 		ubuntu bash /scripts/restore.sh
+	docker container start ${CONTAINER_NAME}
 
 .PHONEY: view-backup
 view-backup:

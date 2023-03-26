@@ -69,4 +69,3 @@ make view-backup
 
 - Make a systemctl timer backup thingo.
 - Make a systemctl timer to thin out old backups
-- Do a more rigorous test of a backup restore.
