@@ -13,6 +13,7 @@ VIEW_BACKUP_FOLDER=view_backup
 
 .PHONEY: build-image
 build-image:
+	# Build the current version of the image.
 	docker build \
 		--tag ${DOCKER_IMAGE_NAME}:latest \
 		--tag ${DOCKER_IMAGE_NAME}:${VERSION} \
@@ -22,6 +23,7 @@ build-image:
 
 .PHONEY: inspect-files
 inspect-files:
+	# Get a shell in a container with the server files mounted.
 	docker run \
 		--rm \
 		--volume ${VOLUME_NAME}:/server-files \
@@ -30,19 +32,27 @@ inspect-files:
 		--interactive \
 		alpine
 
-.PHONEY: backup
-backup:
-	docker container stop ${CONTAINER_NAME}
+# Just runs the backup, without bother to stop the container or anything first.
+.PHONEY: just-backup
+just-backup:
 	docker run \
 		--rm \
 		--volume ${VOLUME_NAME}:/server-files \
 		--volume `pwd`/backups:/backups \
 		--volume `pwd`/scripts:/scripts \
 		ubuntu bash /scripts/backup.sh `id -u` `id -g`
+
+
+.PHONEY: backup
+backup:
+	# Stop the container, backup the files, and restart the container.
+	docker container stop ${CONTAINER_NAME}
+	make just-backup
 	docker container start ${CONTAINER_NAME}
 
 .PHONEY: restore
 restore:
+	# Restore the most recent backup.
 	docker run \
 		--rm \
 		--volume ${VOLUME_NAME}:/server-files \
@@ -52,6 +62,7 @@ restore:
 
 .PHONEY: view-backup
 view-backup:
+	# Uncompress the most recent backup.
 	rm -rf ${VIEW_BACKUP_FOLDER}
 	mkdir ${VIEW_BACKUP_FOLDER}
 	tar \
@@ -61,8 +72,21 @@ view-backup:
 
 .PHONEY: up
 up:
+	# Start the server, creating it and / or the required volume if they don't
+	# exist.
 	docker compose up -d
 
 .PHONEY: stop
 stop:
+	# Stop the server.
 	docker container stop ${CONTAINER_NAME}
+
+.PHONEY: update
+update:
+	# Stop the server, back it up, pull the repo, re-build the image, and restart
+	# the server.
+	docker container stop ${CONTAINER_NAME}
+	make just-backup
+	git pull
+	make build-image
+	docker compose up -d
