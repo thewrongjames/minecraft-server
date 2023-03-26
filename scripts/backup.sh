@@ -6,7 +6,7 @@
 # In a script so that I could use bash variables, as every line of a makefile is
 # executed in a new sub-shell.
 
-if [ "$n" != "2" ]
+if [ "$#" != "2" ]
 then
   echo Backs up the current server files and then changes them to be owned by \
     the given user ID and group ID. Backups are timestamped in UTC.

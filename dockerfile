@@ -19,5 +19,5 @@ WORKDIR /opt/minecraft/server-files
 EXPOSE 25565
 
 # The RAM environment variable must be set to run the container.
-ENTRYPOINT java -Xms${RAM} -Xmx${RAM} -jar /opt/minecraft/paper.jar --nogui
-
+ENTRYPOINT ["/bin/sh", "/opt/minecraft/scripts/entrypoint.sh"]
+  

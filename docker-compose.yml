@@ -6,12 +6,17 @@ services:
       - type: volume
         source: persistent-files
         target: /opt/minecraft/server-files
+      - type: bind
+        source: ./scripts
+        target: /opt/minecraft/scripts
     environment:
       RAM: 3G
     ports:
       - 25565:25565
+    # So that `docker container attach ...` works.
     stdin_open: true
     tty: true
+
 
 volumes:
   persistent-files:

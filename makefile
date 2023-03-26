@@ -2,9 +2,12 @@ DOCKER_IMAGE_NAME=thewrongjames/minecraft-server
 
 PAPER_VERSION=1.19.4
 PAPER_BUILD_NUMBER=466
-CUSTOM_VERSION=1
+CUSTOM_VERSION=2
 
 VERSION=${PAPER_VERSION}-${PAPER_BUILD_NUMBER}-${CUSTOM_VERSION}
+
+CONTAINER_NAME=minecraft-server_server
+VOLUME_NAME=minecraft-server_persistent-files
 
 VIEW_BACKUP_FOLDER=view_backup
 
@@ -21,7 +24,7 @@ build-image:
 inspect-files:
 	docker run \
 		--rm \
-		--volume minecraft-server_persistent-files:/server-files \
+		--volume ${VOLUME_NAME}:/server-files \
 		--entrypoint /bin/sh \
 		--tty \
 		--interactive \
@@ -29,18 +32,20 @@ inspect-files:
 
 .PHONEY: backup
 backup:
+	docker container stop ${CONTAINER_NAME}
 	docker run \
 		--rm \
-		--volume minecraft-server_persistent-files:/server-files \
+		--volume ${VOLUME_NAME}:/server-files \
 		--volume `pwd`/backups:/backups \
 		--volume `pwd`/scripts:/scripts \
 		ubuntu bash /scripts/backup.sh `id -u` `id -g`
+	docker container start ${CONTAINER_NAME}
 
 .PHONEY: restore
 restore:
 	docker run \
 		--rm \
-		--volume minecraft-server_persistent-files:/server-files \
+		--volume ${VOLUME_NAME}:/server-files \
 		--volume `pwd`/backups:/backups \
 		--volume `pwd`/scripts:/scripts \
 		ubuntu bash /scripts/restore.sh
@@ -53,3 +58,11 @@ view-backup:
 		-xzvf \
 		backups/`ls backups -t --width=1 | head -n 1` \
 		-C ${VIEW_BACKUP_FOLDER}
+
+.PHONEY: up
+up:
+	docker compose up -d
+
+.PHONEY: stop
+stop:
+	docker container stop ${CONTAINER_NAME}

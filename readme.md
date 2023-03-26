@@ -4,10 +4,10 @@ A repo for managing my minecraft server. I use the paper server inside a docker 
 
 ```
 make build-image
-docker compose up -d
+make up
 ```
 
-The `-d` means to run the container in the background, so you can keep your terminal.
+`make up` is just a shorthand for `docker compose up -d`.
 
 You will then need to accept the EULA, which you can do using
 
@@ -20,7 +20,7 @@ which will dump you in an Alpine (just because it had `vi` built in) container w
 After this you will need to restart the container with
 
 ```
-docker compose up -d
+make up
 ```
 
 after which everything should run. However, if you wish to modify any settings you can do so by running
@@ -31,11 +31,10 @@ make inspect-files
 
 again.
 
-Stopping the container through docker doesn't gracefully stop the server for some reason, so always stop the server with
+You can stop the container with
 
 ```
-docker container attach minecraft-server_server
-stop
+make stop
 ```
 
 .
@@ -48,13 +47,15 @@ You can backup with
 make backup
 ```
 
-and restore with
+which will stop the server (causing it to save changes), run the backup, and restart the server.
+
+You can restore from the most recent backup with
 
 ```
 make restore
 ```
 
-which will restore the most recent backup. If you wish to restore a specific backup, look into how it functions in the makefile.
+If you wish to restore a specific backup, look into how it functions in the makefile.
 
 You can decompress the most recent backup with
 
@@ -67,4 +68,5 @@ make view-backup
 ## TODO
 
 - Make a systemctl timer backup thingo.
-- Make `docker container stop` stop the server gracefully.
+- Make a systemctl timer to thin out old backups
+- Do a more rigorous test of a backup restore.
