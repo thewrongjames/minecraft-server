@@ -23,10 +23,12 @@ build-image:
 
 .PHONEY: inspect-files
 inspect-files:
-	# Get a shell in a container with the server files mounted.
+	# Get a shell in a container with the server files and the repo folder
+	# mounted.
 	docker run \
 		--rm \
 		--volume ${VOLUME_NAME}:/server-files \
+		--volume `pwd`:/repo \
 		--entrypoint /bin/sh \
 		--tty \
 		--interactive \
