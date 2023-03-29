@@ -12,6 +12,8 @@ USER minecraft:minecraft
 
 WORKDIR /opt/minecraft
 
+COPY scripts/entrypoint.sh /opt/minecraft
+
 RUN curl https://api.papermc.io/v2/projects/paper/versions/${PAPER_VERSION}/builds/${PAPER_BUILD_NUMBER}/downloads/paper-${PAPER_VERSION}-${PAPER_BUILD_NUMBER}.jar -o paper.jar
 
 WORKDIR /opt/minecraft/server-files
@@ -19,5 +21,5 @@ WORKDIR /opt/minecraft/server-files
 EXPOSE 25565
 
 # The RAM environment variable must be set to run the container.
-ENTRYPOINT ["/bin/sh", "/opt/minecraft/scripts/entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "/opt/minecraft/entrypoint.sh"]
   

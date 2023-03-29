@@ -6,9 +6,6 @@ services:
       - type: volume
         source: persistent-files
         target: /opt/minecraft/server-files
-      - type: bind
-        source: ./scripts
-        target: /opt/minecraft/scripts
     environment:
       RAM: 3G
     ports:
