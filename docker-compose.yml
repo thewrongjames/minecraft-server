@@ -6,6 +6,8 @@ services:
       - type: volume
         source: persistent-files
         target: /opt/minecraft/server-files
+        cpu_count: 3.5
+        restart: unless-stopped
     environment:
       RAM: 3G
     ports:
