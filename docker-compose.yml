@@ -6,10 +6,13 @@ services:
       - type: volume
         source: persistent-files
         target: /opt/minecraft/server-files
-        cpu_count: 3.5
-        restart: unless-stopped
     environment:
       RAM: 3G
+    deploy:
+      resources:
+        limits:
+          cpus: '3.5'
+    restart: unless-stopped
     ports:
       - 25565:25565
     # So that `docker container attach ...` works.
