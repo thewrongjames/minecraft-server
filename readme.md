@@ -78,3 +78,6 @@ If the service already existed when you copy it in, you will need to run `system
 ## TODO
 
 - Make a systemctl timer to thin out old backups
+- Work out what is going on with replacing timings with spark. I think for now I should just disable timings.
+  - https://spark.lucko.me/
+  - https://github.com/PaperMC/Paper/issues/8948
